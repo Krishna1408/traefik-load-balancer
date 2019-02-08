@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   fe:
     image: webdevops/php-apache
@@ -9,7 +8,7 @@ services:
     volumes:
       - ./fe:/src/app/public
     environment:
-      - WEB_DOCUMENT_ROOT=/src/app/public
+      WEB_DOCUMENT_ROOT: "/src/app/public"
     networks:
       - front-tier
     depends_on:
@@ -36,7 +35,7 @@ services:
     volumes:
       - ./be:/src/app/public
     environment:
-      - WEB_DOCUMENT_ROOT=/src/app/public
+      WEB_DOCUMENT_ROOT: "/src/app/public"
     networks:
       - back-tier
     depends_on:
@@ -46,10 +45,13 @@ services:
     image: mariadb
     volumes:
       - ./sql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
-    environment:
-      - MYSQL_ROOT_PASSWORD=mydb
     networks:
       - back-tier
+    environment:
+      MYSQL_DATABASE: falconi
+      MYSQL_USER: falconi
+      MYSQL_PASSWORD: falconi
+      MYSQL_ROOT_PASSWORD: falconi
 
 networks:
   front-tier:

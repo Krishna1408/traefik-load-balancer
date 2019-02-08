@@ -4,6 +4,7 @@
  * Database configuration file
  */
 $mysql_host = 'db';
-$mysql_user = 'mydb';
-$mysql_pass = 'mydb';
-$mysql_db = 'mydb';
+$mysql_user = 'falconi';
+$mysql_pass = 'falconi';
+$mysql_db = 'falconi';
+
