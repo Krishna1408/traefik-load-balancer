@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  fe:
+    image: webdevops/php-apache
+    labels:
+     - "traefik.backend.healthcheck.port=8081"
+     - "traefik.frontend.rule=Host:front-end.com"
+    volumes:
+      - ./fe:/src/app/public
+    environment:
+      - WEB_DOCUMENT_ROOT=/src/app/public
+    networks:
+      - front-tier
+    depends_on:
+    - be
+
+  httpdbe:
+    image: traefik
+    depends_on:
+    - db
+    command: --docker
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - back-tier
+      - front-tier
+
+  be:
+    image: webdevops/php-apache
+    labels:
+     - "traefik.backend.healthcheck.port=8082"
+     - "traefik.frontend.rule=Host:httpdbe"
+    volumes:
+      - ./be:/src/app/public
+    environment:
+      - WEB_DOCUMENT_ROOT=/src/app/public
+    networks:
+      - back-tier
+    depends_on:
+    - httpdbe
+
+  db:
+    image: mariadb
+    volumes:
+      - ./sql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mydb
+    networks:
+      - back-tier
+
+networks:
+  front-tier:
+  back-tier:
