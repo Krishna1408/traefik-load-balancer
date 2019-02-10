@@ -48,10 +48,10 @@ services:
     networks:
       - back-tier
     environment:
-      MYSQL_DATABASE: falconi
-      MYSQL_USER: falconi
-      MYSQL_PASSWORD: falconi
-      MYSQL_ROOT_PASSWORD: falconi
+      MYSQL_DATABASE: traefik
+      MYSQL_USER: traefik
+      MYSQL_PASSWORD: traefik
+      MYSQL_ROOT_PASSWORD: traefik
 
 networks:
   front-tier:
